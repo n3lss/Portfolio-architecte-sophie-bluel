@@ -2,7 +2,10 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-
+:root {
+	--orange : #B1663C;
+	--green : #1D6154;
+}
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -52,6 +55,8 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	background: #FFFEF8;
+
 }
 header {
 	display: flex;
@@ -68,7 +73,7 @@ h1{
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: var(--orange)
 }
 
 h1 > span {
@@ -82,7 +87,7 @@ h2{
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
-	color: #1D6154
+	color: var(--green)
 }
 nav ul {
 	display: flex;
@@ -94,9 +99,17 @@ nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
 }
+a {
+	outline: none;
+  	text-decoration: none;
+	  color: black;
+}
+li a:hover {
+	color: var(--orange)
+}
 
 li:hover {
-	color: #B1663C;
+	color: var(--orange);
 }
 #introduction {
 	display: flex;
@@ -125,6 +138,29 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+#filter input {
+	color: var(--green);
+	padding: 0px 15px;
+	min-width: 100px;
+	height: 37px;
+	border-radius: 60px;
+	border: 1px solid var(--green);
+	background-color: white;
+	margin: 5px;
+}
+#filter .active {
+	background-color: var(--green);
+	color: white;
+}
+
+#filter {
+	margin: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+
 .gallery {
 	width: 100%;
 	display: grid;
@@ -173,7 +209,7 @@ input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
-	background-color: #1D6154;
+	background-color: var(--green);
 	margin : 2em auto ;
 	width: 180px;
 	text-align: center;
