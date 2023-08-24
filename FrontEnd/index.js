@@ -11,75 +11,83 @@ document.addEventListener('DOMContentLoaded', () => {
 		filterButtons.forEach((button) => button.classList.remove('active'));
 		element.classList.add('active');
 	}
+	
+	// recupere les info avec fetch
+	function getfetch(url) {
+		return fetch(url)
+			.then((response) => response.json())
+			.catch((error) => console.log('Erreur : ' + error));
+	}
 	//crée les boutton pour les filtre
-	function createFilter(name) {
-		const buttonFilter = document.createElement('input');
-		buttonFilter.value = name;
-		buttonFilter.type = 'button';
-		buttonFilter.addEventListener('click', () => {
-			removeColor(buttonFilter);
-			categname = buttonFilter.value;
-			getworks();
-		});
-		filter.appendChild(buttonFilter);
-	}
-
-	//recupere les info avec fetch pour créer les boutton de filtre
-	function getCategory() {
-		fetch('http://localhost:5678/api/categories')
-			.then((response) => response.json())
-			.then((response) => {
+	async function createFilter() {
+		try {
+			const name = await getfetch('http://localhost:5678/api/categories');
+			const buttonFilter = document.createElement('input');
+			buttonFilter.value = 'tous';
+			buttonFilter.type = 'button';
+			buttonFilter.className = 'active';
+			buttonFilter.addEventListener('click', () => {
+				removeColor(buttonFilter);
+				categname = buttonFilter.value;
+				createWorks();
+			});
+			filter.appendChild(buttonFilter);
+			const objectLength = Object.keys(name).length;
+			for (let categ = 0; categ < objectLength; categ++) {
 				const buttonFilter = document.createElement('input');
-				buttonFilter.value = 'tous';
-				buttonFilter.type = 'button';
-				buttonFilter.className = 'active';
-				buttonFilter.addEventListener('click', () => {
-					removeColor(buttonFilter);
-					categname = buttonFilter.value;
-					getworks();
-				});
-				filter.appendChild(buttonFilter);
-				const objectLength = Object.keys(response).length;
-				for (let categ = 0; categ < objectLength; categ++) {
-					createFilter(response[categ].name);
+			buttonFilter.value = name[categ].name;
+			buttonFilter.type = 'button';
+			buttonFilter.addEventListener('click', () => {
+				removeColor(buttonFilter);
+				categname = buttonFilter.value;
+				createWorks();
+			});
+			filter.appendChild(buttonFilter);
 				}
-			})
-			.catch((error) => console.log('Erreur : ' + error));
+		} catch (error) {
+			console.log("Erreur lors du traitement des filtre:", error);
+		}
 	}
-	//créer laffichage pour chaque travaux avec les parametre
-	function createworks(img, titel) {
-		const figure = document.createElement('figure');
-		const image = document.createElement('img');
-		const figcaption = document.createElement('figcaption');
 
-		image.src = img;
-		image.alt = titel;
-		figcaption.textContent = titel;
-		figure.appendChild(image);
-		figure.appendChild(figcaption);
-		gallery.appendChild(figure);
-	}
-	//récupér les data de works pour les afficher
-	function getworks() {
-		fetch('http://localhost:5678/api/works')
-			.then((response) => response.json())
-			.then((response) => {
-				if (categname === 'tous') {
-					const objectLength = Object.keys(response).length;
-					gallery.innerHTML = '';
-					for (let works = 0; works < objectLength; works++) {
-						createworks(response[works].imageUrl, response[works].title);
-					}
-				} else {
-					const idspes = response.filter((item) => item.category.name === categname);
-					const objectLength = Object.keys(idspes).length;
-					gallery.innerHTML = '';
-					for (let works = 0; works < objectLength; works++) {
-						createworks(idspes[works].imageUrl, idspes[works].title);
-					}
+	// crée les affichage pour les travaux
+	async function createWorks() {
+		try {
+			const response = await getfetch('http://localhost:5678/api/works');
+			if (categname === 'tous') {
+				const objectLength = Object.keys(response).length;
+				gallery.innerHTML = '';
+				for (let works = 0; works < objectLength; works++) {
+					const figure = document.createElement('figure');
+					const image = document.createElement('img');
+					const figcaption = document.createElement('figcaption');
+
+					image.src = response[works].imageUrl;
+					image.alt = response[works].title;
+					figcaption.textContent = response[works].title;
+					figure.appendChild(image);
+					figure.appendChild(figcaption);
+					gallery.appendChild(figure);
 				}
-			})
-			.catch((error) => console.log('Erreur : ' + error));
+			} else {
+				const idspes = response.filter((item) => item.category.name === categname);
+				const objectLength = Object.keys(idspes).length;
+				gallery.innerHTML = '';
+				for (let works = 0; works < objectLength; works++) {
+					const figure = document.createElement('figure');
+					const image = document.createElement('img');
+					const figcaption = document.createElement('figcaption');
+
+					image.src = idspes[works].imageUrl;
+					image.alt = idspes[works].title;
+					figcaption.textContent = idspes[works].title;
+					figure.appendChild(image);
+					figure.appendChild(figcaption);
+					gallery.appendChild(figure);
+				}
+			}
+		} catch (error) {
+			console.log("Erreur lors du traitement des travaux :", error);
+		}
 	}
 
 	function buttonModifi() {
@@ -91,13 +99,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		h2Portfolio.appendChild(document.createTextNode(' '));
 		h2Portfolio.appendChild(modifier);
 	}
-
+	console.log(token);
 	if (token) {
 		buttonModifi();
 		console.log('connecter!');
 	}
-	getCategory();
-	getworks();
+	createFilter()
+	createWorks();
 });
 /* window.addEventListener('beforeunload', function () {
 	localStorage.removeItem('token');
