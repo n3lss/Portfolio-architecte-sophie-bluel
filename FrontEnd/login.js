@@ -1,5 +1,5 @@
 document.getElementById('login-form').addEventListener('submit', function (event) {
-	event.preventDefault(); // Empêche l'envoi classique du formulaire
+	event.preventDefault(); 
 
 	var email = document.getElementById('email').value;
 	var password = document.getElementById('password').value;
