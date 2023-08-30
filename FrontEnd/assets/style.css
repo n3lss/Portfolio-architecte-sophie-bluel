@@ -175,7 +175,7 @@ li:hover {
 }
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 #contact > * {
 	text-align: center;
@@ -223,9 +223,9 @@ footer nav ul {
 }
 
 .modal {
-	/* display: none;  */
+	display: none; 
 	position: fixed; 
-	padding-top: 500px; 
+	padding-top: 200px; 
 	left: 0;
 	top: 0;
 	width: 100%; 
@@ -241,8 +241,43 @@ footer nav ul {
 	padding: 20px;
 	border: 1px solid #888;
 	width: 630px;
-  }
+}
+#gestion-galery img {
+	width: 50px;
+}
+#gestion-galery {
+	justify-content: center;
+    display: grid;
+    grid-template-columns: 10% 10% 10% 10% 10%;
+}
+#gestion-galery button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #000;
+	border-radius: 2px;
+	width: 18px;
+	height: 19px;
+    border: none;
+    transform: translate(150%, -350%);
+}
+.header-contain {
+	display: flex;
+}
 
+.trash-can-solid {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	
+}
+.fa-solid, .fas {
+	color: white;
+}
+.header-contain h2 {
+	justify-content: center;
+}
 .close {
 	color: #aaaaaa;
 	float: right;
@@ -254,4 +289,18 @@ footer nav ul {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+.contain-modal input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: var(--green);
+	margin : 2em auto ;
+	width: 180px;
+	text-align: center;
+	border-radius: 60px ;
 }

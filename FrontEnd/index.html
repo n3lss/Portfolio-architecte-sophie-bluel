@@ -10,6 +10,11 @@
 			href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
 			rel="stylesheet"
 		/>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+		/>
+
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="./assets/style.css" />
 		<script src="index.js"></script>
@@ -20,8 +25,8 @@
 			<nav>
 				<ul>
 					<a href="/FrontEnd/index.html"><li>projets</li></a>
-					<a href="#contacte"><li>contact</li></a>
-					<a href="/FrontEnd/login.html"><li>login</li></a>
+					<a href="#contact"><li>contact</li></a>
+					<a href="/FrontEnd/login.html" id="login"><li>login</li></a>
 					<li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
 				</ul>
 			</nav>
@@ -52,14 +57,7 @@
 			<section id="portfolio">
 				<h2>Mes Projets</h2>
 				<div id="modal" class="modal">
-					<div id="contain-modal" class="contain-modal">
-						<h2>Galerie photo</h2>
-						<span class="close">&times;</span>
-						<div class="gestion-galery" id="gestion-galery">
-						</div>
-						<input type="button" value="Ajouter une photo">
-						<a>Supprimer la galerie</a>
-					</div>
+					<div id="contain-modal" class="contain-modal"></div>
 				</div>
 				<div id="filter"></div>
 				<div class="gallery" id="gallery"></div>
