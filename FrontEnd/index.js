@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		let heade = {};
 		if (!type) {
 			heade = {
-				method: 'GET',
+				method: type,
 			};
 		} else if (type) {
 			const headers = {
@@ -104,12 +104,13 @@ document.addEventListener('DOMContentLoaded', () => {
 			console.log('Erreur lors du traitement des travaux :', error);
 		}
 	}
-
-	async function worksDelet() {
+	// affiche les travaux avec la corbeille pour suprimmer 
+	async function worksDelete() {
 		try {
 			const response = await getfetch('http://localhost:5678/api/works');
 			const objectLength = Object.keys(response).length;
 			const gestionGalery = document.getElementById('gestion-galery');
+			gestionGalery.innerHTML = '';
 			for (let works = 0; works < objectLength; works++) {
 				const figure = document.createElement('figure');
 				const image = document.createElement('img');
@@ -120,11 +121,13 @@ document.addEventListener('DOMContentLoaded', () => {
 				trash.ariaHidden = 'true';
 				input.addEventListener('click', () => {
 					getfetch(`http://localhost:5678/api/works/${response[works].id}`, 'DELETE');
+					createWorks()
+					worksDelete()
 				});
 				input.appendChild(trash);
 				image.src = response[works].imageUrl;
 				image.alt = response[works].title;
-				figcaption.textContent = 'edite';
+				figcaption.textContent = 'edit';
 				figure.appendChild(image);
 				figure.appendChild(input);
 				figure.appendChild(figcaption);
@@ -134,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			console.log('Erreur lors du traitement des travaux :', error);
 		}
 	}
+	//crée la modal pour la gallery
 	function creatGallery() {
 		const containModalDiv = document.getElementById('contain-modal');
 		containModalDiv.innerHTML = '';
@@ -173,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		containModalDiv.appendChild(gestionGaleryDiv);
 		containModalDiv.appendChild(footerContainDiv);
 	}
+	// execute les fonction quand le token et valide 
 	function connected() {
 		//execute la fonction qui crée la modale
 		creatGallery();
@@ -210,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			//execute la fonction pour afficher l'ajout de nouveaux travaux
 		});
 		//execute la fonction qui affiche tout les travaux et qui premet de les supprimer
-		worksDelet();
+		worksDelete();
 	}
 
 	if (token) {
