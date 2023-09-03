@@ -236,6 +236,15 @@ footer nav ul {
   }
 
 .contain-modal {
+	display: block;
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 630px;
+}
+.addPicture {
+	display: none;
 	background-color: #fefefe;
 	margin: auto;
 	padding: 20px;
@@ -261,9 +270,7 @@ footer nav ul {
     border: none;
     transform: translate(150%, -350%);
 }
-.header-contain {
-	display: flex;
-}
+
 
 .trash-can-solid {
 	display: flex;
@@ -276,16 +283,31 @@ footer nav ul {
 	color: white;
 }
 .header-contain h2 {
+	margin-bottom: 30px;
+	display: flex;
 	justify-content: center;
 }
-.close {
+#arrow-left{
 	color: #aaaaaa;
 	float: right;
 	font-size: 28px;
 	font-weight: bold;
   }
-.close:hover,
-.close:focus {
+#arrow-left:hover,
+#arrow-left:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+  }
+
+#close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+  }
+#close:hover,
+#close:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
