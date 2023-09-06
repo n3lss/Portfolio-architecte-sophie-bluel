@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	// recupere les info avec fetch
-	function getfetch(url, type, body) {
+	function allFetch(url, type, body) {
 		let heade = {};
 		if (!type) {
 			heade = {
@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		} else if (type) {
 			const headers = {
 				Authorization: `Bearer ${token}`,
+				ContentType: 'multipart/form-data',
 			};
 
 			heade = {
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	//crée les boutton pour les filtre
 	async function createFilter() {
 		try {
-			const name = await getfetch('http://localhost:5678/api/categories');
+			const name = await allFetch('http://localhost:5678/api/categories');
 			const buttonFilter = document.createElement('input');
 			buttonFilter.value = 'tous';
 			buttonFilter.type = 'button';
@@ -68,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	// crée les affichage pour les travaux
 	async function createWorks() {
 		try {
-			const response = await getfetch('http://localhost:5678/api/works');
+			const response = await allFetch('http://localhost:5678/api/works');
 			if (categname === 'tous') {
 				const objectLength = Object.keys(response).length;
 				gallery.innerHTML = '';
@@ -108,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	// affiche les travaux avec la corbeille pour suprimmer
 	async function worksDelete() {
 		try {
-			const response = await getfetch('http://localhost:5678/api/works');
+			const response = await allFetch('http://localhost:5678/api/works');
 			const objectLength = Object.keys(response).length;
 			const gestionGalery = document.getElementById('gestion-galery');
 			gestionGalery.innerHTML = '';
@@ -121,7 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				trash.className = 'fas fa-trash-alt';
 				trash.ariaHidden = 'true';
 				input.addEventListener('click', () => {
-					getfetch(`http://localhost:5678/api/works/${response[works].id}`, 'DELETE');
+					allFetch(`http://localhost:5678/api/works/${response[works].id}`, 'DELETE');
+
 					createWorks();
 					worksDelete();
 				});
@@ -137,6 +139,20 @@ document.addEventListener('DOMContentLoaded', () => {
 		} catch (error) {
 			console.log('Erreur lors du traitement des travaux dans la galery:', error);
 		}
+	}
+	// envoie le formulaire a la bdd
+	function newWorks() {
+		const img = document.getElementById('buttonAdd');
+		const title = document.getElementById('titleAdd');
+		const select = document.getElementById('choix');
+		const categori = select.value;
+		const body = {
+			image: img.files[0],
+			title: title.value,
+			category: categori,
+		};
+		console.log(body);
+		allFetch('http://localhost:5678/api/works', 'POST', body);
 	}
 	//crée la modal pour la gallery
 	function creatGallery() {
@@ -180,6 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		//execute la fonction qui affiche tout les travaux et qui premet de les supprimer
 		worksDelete();
 	}
+	//créé la modal pour ajouter un projet
 	async function creatAddPicture() {
 		try {
 			const addPicture = document.getElementById('addPicture');
@@ -213,70 +230,106 @@ document.addEventListener('DOMContentLoaded', () => {
 			addPicture.appendChild(headerAddPictureDiv);
 
 			//formurlaire
-
+			//crée une balise formulair
 			const formAdd = document.createElement('form');
 			formAdd.className = 'formAdd';
-
+			//cree une div pour le faux boutton pour ajouter l'image
 			const buttonimg = document.createElement('div');
 			buttonimg.id = 'addImg';
 			buttonimg.className = 'addImg';
 			buttonimg.addEventListener('click', () => {
 				inputAdd.click();
 			});
+			//crée un div pour le premier affichage avent le boutton
+			const fakeButton = document.createElement('div');
+			fakeButton.className = 'fakeButton';
 			const picturI = document.createElement('i');
 			picturI.className = 'fa-regular fa-image fa-xl';
-
+			//cree une balise image invisible pour afficher limage quand elle sera ajouter avent lenvoie
+			const img = document.createElement('img');
+			img.id = 'newImg';
+			img.style.display = 'none';
+			//crée une input fill pour ajouter limage
 			const inputAdd = document.createElement('input');
 			inputAdd.type = 'file';
+			inputAdd.required = 'required';
 			inputAdd.id = 'buttonAdd';
 			inputAdd.style.display = 'none';
 			inputAdd.accept = '.jpg, .png';
+			//quand l'input change elle modifi l'affichage
+			inputAdd.addEventListener('change', () => {
+				if (inputAdd.files.length > 0) {
+					let newimg = inputAdd.files[0];
+					let imgUrl = URL.createObjectURL(newimg);
 
+					img.src = imgUrl;
+					img.style.display = 'block';
+					fakeButton.style.display = 'none';
+				} else {
+					img.src = 'imgUrl';
+					img.style.display = 'none';
+					fakeButton.style.display = 'block';
+				}
+			});
+			// faux boutton pour l'affichage
 			const button = document.createElement('button');
 			button.textContent = '+ Ajouter photo';
 			button.type = 'button';
-
+			//balise text pour le type de fichier et la taille max
 			const type = document.createElement('span');
 			type.textContent = 'jpg, png : 4mo max';
-
-			buttonimg.appendChild(picturI);
+			//crée le faux boutton en regroupent tout
+			buttonimg.appendChild(img);
+			fakeButton.appendChild(picturI);
+			fakeButton.appendChild(button);
+			fakeButton.appendChild(type);
+			buttonimg.appendChild(fakeButton);
 			buttonimg.appendChild(inputAdd);
-			buttonimg.appendChild(button);
-			buttonimg.appendChild(type);
 			formAdd.appendChild(buttonimg);
-
+			//text pour indique qu'on doit ecrire le titre
 			const titre = document.createElement('span');
 			titre.textContent = 'Titre';
 			titre.className = 'title';
 
+			//input pour ajouter le titre
 			const titreName = document.createElement('input');
+			titreName.id = 'titleAdd';
 			titreName.type = 'text';
 			titreName.className = 'titreName';
-
+			titreName.required = 'required';
+			//text qui indique qu'on doit choicisre la categori
 			const categorie = document.createElement('span');
 			categorie.textContent = 'Catégorie';
 			categorie.className = 'categorie';
-
+			//crée un selecteur
 			const select = document.createElement('select');
 			select.id = 'choix';
 			select.name = 'categorie';
-
-			const name = await getfetch('http://localhost:5678/api/categories');
+			// fetch pour recuperer les categori et les afficher dans le choix
+			const name = await allFetch('http://localhost:5678/api/categories');
 			const objectLength = Object.keys(name).length;
 			for (let categ = 0; categ < objectLength; categ++) {
 				const option = document.createElement('option');
-				option.value = name[categ].name;
+				option.value = name[categ].id;
+				option.id = name[categ].name;
 				option.textContent = name[categ].name;
 				select.appendChild(option);
 			}
+			// boutton de validation du formulaire
 			const valid = document.createElement('input');
-			valid.type = 'submit';
-			valid.placeholder = 'Valider';
+			valid.type = 'button';
+			valid.addEventListener('click', () => {
+				newWorks();
+				createWorks();
+				worksDelete();
+			});
+			//regroupement de tout se qui a était crée dans le formulaire
 			formAdd.appendChild(titre);
 			formAdd.appendChild(titreName);
 			formAdd.appendChild(categorie);
 			formAdd.appendChild(select);
 			formAdd.appendChild(valid);
+			//ajoute du formulaire dans la modale
 			addPicture.appendChild(formAdd);
 		} catch (error) {
 			console.log('Erreur lors du traitement des travaux dans la galery:', error);

@@ -299,7 +299,9 @@ footer nav ul {
 	text-decoration: none;
 	cursor: pointer;
   }
-
+#newImg {
+	width: 100px;
+}
 #close {
 	color: #aaaaaa;
 	float: right;
