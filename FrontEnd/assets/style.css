@@ -134,10 +134,7 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
-#portfolio h2 {
-	text-align: center;
-	margin-bottom: 1em;
-}
+/* boutton de filtre */
 #filter input {
 	color: var(--green);
 	padding: 0px 15px;
@@ -160,7 +157,22 @@ li:hover {
 	justify-content: center;
 }
 
-
+/* galleri photo */
+.divTitle {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#portfolio h2 {
+display: contents;
+text-align: center;
+margin-bottom: 1em;
+}
+.divTitle a {
+	margin-left: 10px;
+	display: flex;
+	align-items: center;
+}
 .gallery {
 	width: 100%;
 	display: grid;
@@ -173,6 +185,7 @@ li:hover {
 	width: 100%;
 
 }
+/* formulaire de contact */
 #contact {
 	width: 50%;
 	margin: auto;
@@ -221,6 +234,7 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
+/******* modal *******/
 
 .modal {
 	display: none; 
@@ -234,31 +248,41 @@ footer nav ul {
 	background-color: rgb(0,0,0); 
 	background-color: rgba(0,0,0,0.4);
   }
-
+/* lpremier affichage de la modal */
 .contain-modal {
+	border-radius: 10px;
 	display: block;
 	background-color: #fefefe;
 	margin: auto;
 	padding: 20px;
 	border: 1px solid #888;
-	width: 630px;
+	width: calc(630px - 40px);
 }
-.addPicture {
-	display: none;
-	background-color: #fefefe;
-	margin: auto;
-	padding: 20px;
-	border: 1px solid #888;
-	width: 630px;
+/* titre de la modal */
+.header-contain h2 {
+	color: #000;
+	text-align: center;
+	font-family: Work Sans;
+	font-size: 26px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
 }
+/* taille des image */
 #gestion-galery img {
-	width: 50px;
+	width: 78px;
 }
+/* div qui contien les image qui peuvent etre supprimer */
 #gestion-galery {
+	margin: auto;
+    width: 435px;
+	gap: 10px;
 	justify-content: center;
     display: grid;
-    grid-template-columns: 10% 10% 10% 10% 10%;
+    grid-template-columns: 78px 78px 78px 78px 78px;
+	padding: 40px 0px 40px 0px;
 }
+/* boutton pour ajouter une image */
 #gestion-galery button {
 	display: flex;
 	justify-content: center;
@@ -268,53 +292,29 @@ footer nav ul {
 	width: 18px;
 	height: 19px;
     border: none;
-    transform: translate(150%, -350%);
+	transform: translate(300%, -525%);
 }
 
-
+/* Logo de la poubelle pour supprimer les travaux*/
 .trash-can-solid {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	display: flex;
-	
 }
 .fa-solid, .fas {
 	color: white;
 }
-.header-contain h2 {
-	margin-bottom: 30px;
-	display: flex;
-	justify-content: center;
-}
-#arrow-left{
-	color: #aaaaaa;
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
-  }
-#arrow-left:hover,
-#arrow-left:focus {
-	color: #000;
-	text-decoration: none;
-	cursor: pointer;
-  }
-#newImg {
-	width: 100px;
-}
-#close {
-	color: #aaaaaa;
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
-  }
-#close:hover,
-#close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+/* bas de ma modal qui contien le boutton de redirection vers l'ajoute de photo */
+.footer-contain {
+	margin: auto;
+    width: 420px;
+    display: flex;
+    border-block-start: inherit;
+    border-block-start-color: inherit;
 }
 .contain-modal input {
+	padding: 0px 10% 0px 10%;
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
@@ -324,7 +324,133 @@ footer nav ul {
 	color: white;
 	background-color: var(--green);
 	margin : 2em auto ;
-	width: 180px;
+	
 	text-align: center;
 	border-radius: 60px ;
+}
+/* endroit ou l'on peut ajouter des travaux */
+.addPicture {
+	border-radius: 10px;
+	display: none;
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: calc(630px - 40px);
+	align-items: center;
+}
+.header-add {
+	
+	display: flex;
+	justify-content: space-between;
+}
+.addPicture h2 {
+	color: #000;
+	margin: 15px;
+	display: flex;
+	justify-content: center;
+}
+.formAdd {
+	display: grid;
+	margin: auto;
+}
+.formAdd input, select {
+	margin-top: 10px;
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+.formAdd span {
+	margin-top: 10px;
+	font-family: Work Sans;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 16px;
+	letter-spacing: 0em;
+	text-align: left;
+
+}
+.formAdd button {
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: rgba(167, 167, 167, 1);
+	margin : 2em auto ;
+	text-align: center;
+	border-radius: 60px ;
+	width: 237px;
+	height: 36px;
+	font-size: 14px;
+	line-height: 17px;
+	letter-spacing: 0em;
+	border: none;
+}
+.fakeButton {
+	/* padding-top: 10px; */
+	background: rgba(232, 241, 246, 1);
+	border-radius: 3px;
+	margin: auto;
+	display: flex;
+    height: 169px;
+	width: 420px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.fakeButton i {
+	padding-top: 25px;
+	padding-bottom: 15px;
+	color: rgba(185, 197, 204, 1);
+	margin-bottom: 10px;
+	font-size: 64px;
+}
+.fakeButton button {
+	height: 36px;
+	width: 170px;
+	color: rgba(48, 102, 133, 1);
+	background-color: rgba(185, 197, 204, 1);
+	border: none;
+	border-radius: 50px;
+	font-family: Work Sans;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 16px;
+	letter-spacing: 0em;
+	text-align: center;
+	
+	margin-top: 10px;
+}
+.fakeButton img {
+	height: calc(100% + 30px)
+	
+}
+#arrow-left{
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+#arrow-left:hover,
+#arrow-left:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+#close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+#close:hover,
+#close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+#newImg {
+	width: 100px;
 }

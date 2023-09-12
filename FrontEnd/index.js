@@ -130,10 +130,10 @@ document.addEventListener('DOMContentLoaded', () => {
 				input.appendChild(trash);
 				image.src = response[works].imageUrl;
 				image.alt = response[works].title;
-				figcaption.textContent = 'edit';
+				
 				figure.appendChild(image);
 				figure.appendChild(input);
-				figure.appendChild(figcaption);
+				
 				gestionGalery.appendChild(figure);
 			}
 		} catch (error) {
@@ -184,13 +184,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		addButton.value = 'Ajouter une photo';
 		addButton.id = 'AddPictureBtn';
 		// crée une balise a avec comme texte 'Supprimer la galerie'
-		const deleteLink = document.createElement('a');
-		deleteLink.textContent = 'Supprimer la galerie';
+		
 		//ajoute les element dans leur div
-		headerContainDiv.appendChild(closei);
+		containModalDiv.appendChild(closei);
 		headerContainDiv.appendChild(h2Element);
 		footerContainDiv.appendChild(addButton);
-		footerContainDiv.appendChild(deleteLink);
+		
 		//ajoute toute les div a la modal
 		containModalDiv.appendChild(headerContainDiv);
 		containModalDiv.appendChild(gestionGaleryDiv);
@@ -228,8 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			headerAddPictureDiv.appendChild(arrowi);
 			headerAddPictureDiv.appendChild(closei);
-			headerAddPictureDiv.appendChild(h2Element);
 			addPicture.appendChild(headerAddPictureDiv);
+			addPicture.appendChild(h2Element);
 
 			//formurlaire
 			//crée une balise formulair
@@ -266,11 +265,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 					img.src = imgUrl;
 					img.style.display = 'block';
-					fakeButton.style.display = 'none';
+					button.style.display = 'none';
+					picturI.style.display = 'none';
+					type.style.display = 'none';
 				} else {
 					img.src = '';
 					img.style.display = 'none';
-					fakeButton.style.display = 'block';
+					button.style.display = 'initial';
+					picturI.style.display = 'flex';
+					type.style.display = 'flex';
+					
 				}
 			});
 			// faux boutton pour l'affichage
@@ -281,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			const type = document.createElement('span');
 			type.textContent = 'jpg, png : 4mo max';
 			//crée le faux boutton en regroupent tout
-			buttonimg.appendChild(img);
+			fakeButton.appendChild(img);
 			fakeButton.appendChild(picturI);
 			fakeButton.appendChild(button);
 			fakeButton.appendChild(type);
@@ -310,6 +314,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			// fetch pour recuperer les categori et les afficher dans le choix
 			const name = await allFetch('http://localhost:5678/api/categories');
 			const objectLength = Object.keys(name).length;
+			const defaultOption = document.createElement('option');
+			defaultOption.id = 0;
+			defaultOption.textContent = '';
+			select.appendChild(defaultOption);
 			for (let categ = 0; categ < objectLength; categ++) {
 				const option = document.createElement('option');
 				option.value = name[categ].id;
@@ -318,8 +326,9 @@ document.addEventListener('DOMContentLoaded', () => {
 				select.appendChild(option);
 			}
 			// boutton de validation du formulaire
-			const valid = document.createElement('input');
-			valid.type = 'button';
+			const valid = document.createElement('button');
+			valid.type = 'click';
+			valid.textContent = 'valider'
 			valid.addEventListener('click', () => {
 				newWorks();
 				createWorks();
@@ -346,14 +355,19 @@ document.addEventListener('DOMContentLoaded', () => {
 		//
 		//modification de la page quand on et connecter
 		//
-		const login = document.getElementById('login');
-		const modifier = document.createElement('a');
+		const login = document.querySelector("#login li");
 		const h2Portfolio = portfolio.querySelector('h2');
 		const modal = document.getElementById('modal');
-		login.textContent = 'Logout';
+		login.innerHTML = 'Logout';
 		login.href = '/FrontEnd/index.html';
-		modifier.textContent = 'Modifier';
+		const modifier = document.createElement('a');
+		
 		modifier.href = '#';
+		const pen = document.createElement('i')
+		pen.className = 'fa fa-pen-to-square'
+		pen.textContent = ' modifier';
+		modifier.appendChild(pen)
+		
 		//fonction qui fait aparaitre la modale au click
 		modifier.addEventListener('click', () => {
 			modal.style.display = 'block';
@@ -364,8 +378,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		login.addEventListener('click', () => {
 			localStorage.removeItem('token');
 		});
-		h2Portfolio.appendChild(document.createTextNode(' '));
-		h2Portfolio.appendChild(modifier);
+		
+		h2Portfolio.parentNode.insertBefore(modifier, h2Portfolio.nextSibling)
 		//A l'interieure de la modal
 		const close = document.getElementById('close');
 		const addPictureBtn = document.getElementById('AddPictureBtn');
@@ -376,7 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 		addPictureBtn.addEventListener('click', () => {
 			const addPicture = document.getElementById('addPicture');
-			addPicture.style.display = 'block';
+			addPicture.style.display = 'grid';
 			containModal.style.display = 'none';
 			//execute la fonction pour afficher l'ajout de nouveaux travaux
 		});
