@@ -154,7 +154,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
 		
 		console.log(body);
-		allFetch('http://localhost:5678/api/works', 'POST', body);
+		allFetch('http://localhost:5678/api/works', 'POST', body).then((ok) => {
+			console.log('post: ')
+		}).catch((err) => {
+			console.log(err);
+		});
 	}
 	//crée la modal pour la gallery
 	function creatGallery() {
@@ -197,6 +201,69 @@ document.addEventListener('DOMContentLoaded', () => {
 		//execute la fonction qui affiche tout les travaux et qui premet de les supprimer
 		worksDelete();
 	}
+
+	 function fakeButton(){
+		
+			//cree une div pour le faux boutton pour ajouter l'image
+			const buttonimg = document.createElement('div');
+			buttonimg.id = 'addImg';
+			buttonimg.className = 'addImg';buttonimg.addEventListener('click', () => {
+				inputAdd.click();
+			});
+			//crée un div pour le premier affichage avent le boutton
+			const fakeButton = document.createElement('div');
+			fakeButton.className = 'fakeButton';
+			const picturI = document.createElement('i');
+			picturI.className = 'fa-regular fa-image fa-xl';
+			//cree une balise image invisible pour afficher limage quand elle sera ajouter avent lenvoie
+			const img = document.createElement('img');
+			img.id = 'newImg';
+			img.style.display = 'none';
+			//crée une input fill pour ajouter limage
+			const inputAdd = document.createElement('input');
+			inputAdd.type = 'file';
+			inputAdd.required = 'required';
+			inputAdd.id = 'buttonAdd';
+			inputAdd.style.display = 'none';
+			inputAdd.accept = '.jpg, .png';
+			//quand l'input change elle modifi l'affichage
+			inputAdd.addEventListener('change', () => {
+			if (inputAdd.files.length > 0) {
+				let newimg = inputAdd.files[0];
+				let imgUrl = URL.createObjectURL(newimg);
+				
+				img.src = imgUrl;
+				img.style.display = 'block';
+				button.style.display = 'none';
+				picturI.style.display = 'none';
+				type.style.display = 'none';
+			} else {
+				img.src = '';
+				img.style.display = 'none';
+				button.style.display = 'initial';
+				picturI.style.display = 'flex';
+				type.style.display = 'flex';
+				
+			}
+			});
+			// faux boutton pour l'affichage
+			const button = document.createElement('button');
+			button.textContent = '+ Ajouter photo';
+			button.type = 'button';
+			//balise text pour le type de fichier et la taille max
+			const type = document.createElement('span');
+			type.textContent = 'jpg, png : 4mo max';
+			//crée le faux boutton en regroupent tout
+			fakeButton.appendChild(img);
+			fakeButton.appendChild(picturI);
+			fakeButton.appendChild(button);
+			fakeButton.appendChild(type);
+			buttonimg.appendChild(fakeButton);
+			buttonimg.appendChild(inputAdd);
+			const formAdd = document.getElementById('formAdd')
+			formAdd.appendChild(buttonimg);
+			
+	}
 	//créé la modal pour ajouter un projet
 	async function creatAddPicture() {
 		try {
@@ -234,64 +301,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			//crée une balise formulair
 			const formAdd = document.createElement('form');
 			formAdd.className = 'formAdd';
-			//cree une div pour le faux boutton pour ajouter l'image
-			const buttonimg = document.createElement('div');
-			buttonimg.id = 'addImg';
-			buttonimg.className = 'addImg';
-			buttonimg.addEventListener('click', () => {
-				inputAdd.click();
-			});
-			//crée un div pour le premier affichage avent le boutton
-			const fakeButton = document.createElement('div');
-			fakeButton.className = 'fakeButton';
-			const picturI = document.createElement('i');
-			picturI.className = 'fa-regular fa-image fa-xl';
-			//cree une balise image invisible pour afficher limage quand elle sera ajouter avent lenvoie
-			const img = document.createElement('img');
-			img.id = 'newImg';
-			img.style.display = 'none';
-			//crée une input fill pour ajouter limage
-			const inputAdd = document.createElement('input');
-			inputAdd.type = 'file';
-			inputAdd.required = 'required';
-			inputAdd.id = 'buttonAdd';
-			inputAdd.style.display = 'none';
-			inputAdd.accept = '.jpg, .png';
-			//quand l'input change elle modifi l'affichage
-			inputAdd.addEventListener('change', () => {
-				if (inputAdd.files.length > 0) {
-					let newimg = inputAdd.files[0];
-					let imgUrl = URL.createObjectURL(newimg);
-
-					img.src = imgUrl;
-					img.style.display = 'block';
-					button.style.display = 'none';
-					picturI.style.display = 'none';
-					type.style.display = 'none';
-				} else {
-					img.src = '';
-					img.style.display = 'none';
-					button.style.display = 'initial';
-					picturI.style.display = 'flex';
-					type.style.display = 'flex';
-					
-				}
-			});
-			// faux boutton pour l'affichage
-			const button = document.createElement('button');
-			button.textContent = '+ Ajouter photo';
-			button.type = 'button';
-			//balise text pour le type de fichier et la taille max
-			const type = document.createElement('span');
-			type.textContent = 'jpg, png : 4mo max';
-			//crée le faux boutton en regroupent tout
-			fakeButton.appendChild(img);
-			fakeButton.appendChild(picturI);
-			fakeButton.appendChild(button);
-			fakeButton.appendChild(type);
-			buttonimg.appendChild(fakeButton);
-			buttonimg.appendChild(inputAdd);
-			formAdd.appendChild(buttonimg);
+			formAdd.id = 'formAdd'
+			
 			//text pour indique qu'on doit ecrire le titre
 			const titre = document.createElement('span');
 			titre.textContent = 'Titre';
@@ -329,19 +340,21 @@ document.addEventListener('DOMContentLoaded', () => {
 			const valid = document.createElement('button');
 			valid.type = 'click';
 			valid.textContent = 'valider'
-			valid.addEventListener('click', () => {
-				newWorks();
+			valid.addEventListener('click', async () => {
+				await newWorks();
 				createWorks();
 				worksDelete();
 			});
 			//regroupement de tout se qui a était crée dans le formulaire
+			
+			addPicture.appendChild(formAdd);
+			fakeButton()
 			formAdd.appendChild(titre);
 			formAdd.appendChild(titreName);
 			formAdd.appendChild(categorie);
 			formAdd.appendChild(select);
 			formAdd.appendChild(valid);
 			//ajoute du formulaire dans la modale
-			addPicture.appendChild(formAdd);
 		} catch (error) {
 			console.log('Erreur lors du traitement des travaux dans la galery:', error);
 		}
